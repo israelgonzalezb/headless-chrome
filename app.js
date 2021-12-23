@@ -3,6 +3,7 @@ const app = express();
 const puppeteer = require('puppeteer');
 const port = process.env.PORT || 8080;
 const validUrl = require('valid-url');
+const { convert } = require('html-to-text');
 
 var parseUrl = function(url) {
     url = decodeURIComponent(url)
@@ -12,6 +13,33 @@ var parseUrl = function(url) {
 
     return url;
 };
+
+app.get('/text', function(req, res) {
+    var urlToLoad = parseUrl(req.query.url);
+
+    if (validUrl.isWebUri(urlToLoad)) {
+        console.log('Loading: ' + urlToLoad);
+        (async() => {
+            const browser = await puppeteer.launch({
+                args: ['--no-sandbox', '--disable-setuid-sandbox']
+            });
+
+            const page = await browser.newPage();
+            await page.goto(urlToLoad);
+            await page.content().then(function(buffer) {
+                //res.setHeader('Content-Disposition', 'attachment;filename="' + urlToScreenshot + '.png"');
+                res.setHeader('Content-Type', 'text/plain');
+                res.send(convert(buffer,{wordwrap: 130}))
+            });
+
+            await browser.close();
+        })();
+    } else {
+        res.send('Invalid url: ' + urlToLoad);
+    }
+
+});
+
 
 app.get('/html', function(req, res) {
     var urlToLoad = parseUrl(req.query.url);
