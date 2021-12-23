@@ -10,7 +10,8 @@
     "express": "^4.16.2",
     "puppeteer": "^1.13.0",
     "valid-url": "^1.0.9",
-    "html-to-text": "latest"
+    "html-to-text": "latest",
+    "node-html-markdown": "latest"
   },
   "devDependencies": {},
   "scripts": {
