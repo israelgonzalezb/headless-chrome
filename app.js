@@ -4,7 +4,7 @@ const puppeteer = require('puppeteer');
 const port = process.env.PORT || 8080;
 const validUrl = require('valid-url');
 const { convert } = require('html-to-text');
-import { NodeHtmlMarkdown, NodeHtmlMarkdownOptions } = from 'node-html-markdown';
+import { NodeHtmlMarkdown, NodeHtmlMarkdownOptions } from 'node-html-markdown';
 
 var parseUrl = function(url) {
     url = decodeURIComponent(url)
