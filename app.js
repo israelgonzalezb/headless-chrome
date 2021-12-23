@@ -40,7 +40,7 @@ app.get('/text', function(req, res) {
         res.send('Invalid url: ' + urlToLoad);
     }
 
-});qoutes
+});
 
 
 app.get('/html', function(req, res) {
