@@ -4,6 +4,7 @@ const puppeteer = require('puppeteer');
 const port = process.env.PORT || 8080;
 const validUrl = require('valid-url');
 const { convert } = require('html-to-text');
+const { NodeHtmlMarkdown, NodeHtmlMarkdownOptions } = require('node-html-markdown');
 
 var parseUrl = function(url) {
     url = decodeURIComponent(url)
@@ -29,6 +30,7 @@ app.get('/text', function(req, res) {
             await page.content().then(function(buffer) {
                 //res.setHeader('Content-Disposition', 'attachment;filename="' + urlToScreenshot + '.png"');
                 res.setHeader('Content-Type', 'text/plain');
+                req.query.md ? res.send(NodeHtmlMarkdown.translate(buffer)) :
                 res.send(convert(buffer,{wordwrap: 130, baseElements: { selectors: [ 'body' ] }}))
             });
 
