@@ -29,7 +29,7 @@ app.get('/text', function(req, res) {
             await page.content().then(function(buffer) {
                 //res.setHeader('Content-Disposition', 'attachment;filename="' + urlToScreenshot + '.png"');
                 res.setHeader('Content-Type', 'text/plain');
-                res.send(convert(buffer,{wordwrap: 130}))
+                res.send(convert(buffer,{wordwrap: 130, baseElements: { selectors: [ 'body' ] }}))
             });
 
             await browser.close();
