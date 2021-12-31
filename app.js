@@ -21,7 +21,7 @@ var parseUrl = function(url) {
 app.get('/data', function(req, res) {
     var urlToLoad = req.query.url;
 
-    if (validUrl.isWebUri(urlToLoad)) {
+    if (/*validUrl.isWebUri(urlToLoad)*/true) {
         console.log('Loading: ' + urlToLoad);
         (async() => {
             const browser = await puppeteer.launch({
