@@ -18,6 +18,34 @@ var parseUrl = function(url) {
     return url;
 };
 
+app.get('/data', function(req, res) {
+    var urlToLoad = parseUrl(req.query.url);
+
+    if (validUrl.isWebUri(urlToLoad)) {
+        console.log('Loading: ' + urlToLoad);
+        (async() => {
+            const browser = await puppeteer.launch({
+                args: ['--no-sandbox', '--disable-setuid-sandbox']
+            });
+
+            const page = await browser.newPage();
+            await page.goto(urlToLoad);
+            await page.content().then(function(buffer) {
+                res.setHeader('Content-Disposition', 'attachment;filename="' + urlToLoad.split("/")[urlToLoad.split("/").length-1] +'"');
+                //res.setHeader('Content-Type', 'text/plain');
+                res.send(buffer)
+                /*res.send(req.query.md ? NodeHtmlMarkdown.translate(buffer) :
+                  convert(buffer,{wordwrap: 130, baseElements: { selectors: [ 'body' ] }}))*/
+            });
+
+            await browser.close();
+        })();
+    } else {
+        res.send('Invalid url: ' + urlToLoad);
+    }
+
+});
+
 app.get('/text', function(req, res) {
     var urlToLoad = parseUrl(req.query.url);
 
