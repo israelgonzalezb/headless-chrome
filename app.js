@@ -25,7 +25,7 @@ app.get('/data', function(req, res) {
         console.log('Loading: ' + urlToLoad);
         (async() => {
             const browser = await puppeteer.launch({
-                args: ['--no-sandbox', '--disable-setuid-sandbox']
+                args: ['--no-sandbox', '--disable-setuid-sandbox', '--enable-automation']
             });
 
             const page = await browser.newPage();
