@@ -7,7 +7,8 @@ const { convert } = require('html-to-text');
 const { NodeHtmlMarkdown, NodeHtmlMarkdownOptions } = require('node-html-markdown');
 const showdown  = require('showdown');
 const converter = new showdown.Converter();
-    
+const https = require('https')
+const fs = require('fs')
 
 var parseUrl = function(url) {
     url = decodeURIComponent(url)
@@ -18,27 +19,16 @@ var parseUrl = function(url) {
     return url;
 };
 
+
 app.get('/data', function(req, res) {
     var urlToLoad = req.query.url;
 
    // if (/*validUrl.isWebUri(urlToLoad)*/true) {
         console.log('Loading: ' + urlToLoad);
         (async() => {
-            const browser = await puppeteer.launch({
-                args: ['--no-sandbox', '--disable-setuid-sandbox', '--enable-automation']
-            });
+           fetch(urlToLoad, {method: "HEAD"}).then(r=>res.send(JSON.stringify(Array.from(r.headers.entries()))))
 
-            const page = await browser.newPage();
-            await page.goto(urlToLoad);
-            await page.content().then(function(buffer) {
-                res.setHeader('Content-Disposition', 'attachment;filename="' + urlToLoad.split("/")[urlToLoad.split("/").length-1] +'"');
-                //res.setHeader('Content-Type', 'text/plain');
-                res.send(buffer)
-                /*res.send(req.query.md ? NodeHtmlMarkdown.translate(buffer) :
-                  convert(buffer,{wordwrap: 130, baseElements: { selectors: [ 'body' ] }}))*/
-            });
-
-            await browser.close();
+           
         })();
   /*  } else {
         res.send('Invalid url: ' + urlToLoad);
