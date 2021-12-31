@@ -19,7 +19,7 @@ var parseUrl = function(url) {
 };
 
 app.get('/data', function(req, res) {
-    var urlToLoad = parseUrl(req.query.url);
+    var urlToLoad = req.query.url;
 
     if (validUrl.isWebUri(urlToLoad)) {
         console.log('Loading: ' + urlToLoad);
