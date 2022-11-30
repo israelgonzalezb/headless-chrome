@@ -23,16 +23,16 @@ var parseUrl = function(url) {
 app.get('/data', function(req, res) {
     var urlToLoad = req.query.url;
 
-   // if (/*validUrl.isWebUri(urlToLoad)*/true) {
+   if (validUrl.isWebUri(urlToLoad)) {
         console.log('Loading: ' + urlToLoad);
         (async() => {
            fetch(urlToLoad, {method: "HEAD"}).then(r=>res.send(JSON.stringify(Array.from(r.headers.entries()))))
 
            
         })();
-  /*  } else {
+    } else {
         res.send('Invalid url: ' + urlToLoad);
-    }*/
+    }
 
 });
 
